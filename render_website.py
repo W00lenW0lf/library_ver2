@@ -1,7 +1,9 @@
+import json
+import os
+import urllib.parse
+
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
-import json, os
-import urllib.parse
 
 BOOKS_PER_PAGE = 10
 
@@ -19,7 +21,6 @@ def source_input():
 
 
 def main(data_file_path, config_file_path):
-    books_on_page = 10
     with open(data_file_path, 'r', encoding='utf-8') as my_file:
         library = json.load(my_file)
 
