@@ -8,6 +8,16 @@ from livereload import Server
 BOOKS_PER_PAGE = 10
 
 
+def main():
+    data_path, config_path = source_input()
+    page_constructor(data_path, config_path)
+
+    server = Server()
+    server.watch(config_path, lambda: page_constructor(data_path, config_path))
+    server.watch(data_path, lambda: page_constructor(data_path, config_path))
+    server.serve(root='.')
+
+
 def source_input():
     data_file_path = input('Введите путь к файлу с данными (по умолчанию: meta_data.json): ').strip()
     if not data_file_path:
@@ -20,7 +30,7 @@ def source_input():
     return data_file_path, config_file_path
 
 
-def main(data_file_path, config_file_path):
+def page_constructor(data_file_path, config_file_path):
     with open(data_file_path, 'r', encoding='utf-8') as my_file:
         library = json.load(my_file)
 
@@ -52,10 +62,4 @@ def urlencode_filter(value):
 
 
 if __name__ == '__main__':
-    data_path, config_path = source_input()
-    main(data_path, config_path)
-
-    server = Server()
-    server.watch(config_path, lambda: main(data_path, config_path))
-    server.watch(data_path, lambda: main(data_path, config_path))
-    server.serve(root='.')
+    main()
